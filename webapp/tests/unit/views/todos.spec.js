@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue, mount} from "@vue/test-utils";
+import { shallowMount, createLocalVue, mount } from "@vue/test-utils";
 import ToDos from "@/views/ToDoS.vue";
 
 import Vuex from "vuex";
@@ -40,8 +40,24 @@ describe("ToDos", () => {
           "ToDo": true
         }
       });
-      debugger;
       expect(cmp.findAll("todo-stub").length).toBe(1);
+    });
+    it("should trigger an action if the form is clicked", done => {
+      state.todos = [];
+      store.actions = {
+        addToDo: new Promise(() => {
+          expect(true).toBe(true);
+          done();
+        })
+      };
+      let cmp = mount(ToDos, {
+        store,
+        localVue,
+        stubs: {
+          ToDo: true
+        }
+      });
+      cmp.find("form").trigger("submit");
     });
   });
 });
