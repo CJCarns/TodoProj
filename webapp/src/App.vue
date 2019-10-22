@@ -5,7 +5,6 @@
         <router-link class="navbar-item" to="/" exact>
           ExampleApp
         </router-link>
-        <router-link class="navbar-item" to="/" exact>ExampleApp</router-link>
       </template>
       <template slot="start">
         <router-link class="navbar-item" to="/" exact>Home</router-link>
