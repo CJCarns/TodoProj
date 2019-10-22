@@ -2,13 +2,9 @@
   <div id="app">
     <b-navbar class="nav">
       <template slot="brand">
-<<<<<<< HEAD
         <router-link class="navbar-item" to="/" exact>
           ExampleApp
         </router-link>
-=======
-        <router-link class="navbar-item" to="/" exact>ExampleApp</router-link>
->>>>>>> origin/master
       </template>
       <template slot="start">
         <router-link class="navbar-item" to="/" exact>Home</router-link>

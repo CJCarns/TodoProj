@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
-import axios from "axsio";
+import axios from "axios";
 
 Vue.use(Vuex);
 
@@ -18,10 +18,14 @@ export const mutations = {
     state.loginState = { ...state.loginState, loggedIn: false };
   },
   addToDo(state, todo) {
-    state.todos = [
-      ...state.todos,
-      { ...todo, done: false, id: state.todos.length + 1 }
-    ];
+    state.todoIdx = state.todoIdx + 1;
+    state.todos = [...state.todos, { ...todo, done: false, id: state.todoIdx }];
+  },
+  updateToDo(state, todo) {
+    state.todos = state.todos.map(td => (td.id === todo.id ? todo : td));
+  },
+  deleteToDo(state, todo) {
+    state.todos = state.todos.filter(td => td.id !== todo.id);
   }
 };
 
@@ -38,8 +42,13 @@ export const actions = {
     });
   },
   addToDo({ commit }, toDo) {
-    debugger;
     commit("addToDo", toDo);
+  },
+  updateTodo({ commit }, toDo) {
+    commit("updateToDo", toDo);
+  },
+  deleteTodo({ commit }, toDo) {
+    commit("deleteToDo", toDo);
   }
 };
 
@@ -49,7 +58,8 @@ export default new Vuex.Store({
     todos: [],
     loginState: {
       loggedIn: false
-    }
+    },
+    todoIdx: 0
   },
   mutations,
   actions
