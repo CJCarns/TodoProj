@@ -2,9 +2,7 @@
   <div id="app">
     <b-navbar class="nav">
       <template slot="brand">
-        <router-link class="navbar-item" to="/" exact>
-          ExampleApp
-        </router-link>
+        <router-link class="navbar-item" to="/" exact>ExampleApp</router-link>
       </template>
       <template slot="start">
         <router-link class="navbar-item" to="/" exact>Home</router-link>
@@ -34,7 +32,7 @@
       has-modal-card
       :can-cancel="false"
     >
-      <LoginForm />
+      <LoginForm v-on:close="isLoginModalActive = false" />
     </b-modal>
     <router-view />
   </div>
