@@ -8,25 +8,25 @@ localVue.use(Vuex);
 localVue.use(Buefy);
 
 describe("LoginForm.vue", () => {
-  let actions;
   let store;
-  let commit;
 
   beforeEach(() => {
     store = new Vuex.Store();
     store.dispatch = jest.fn();
+    store.dispatch.mockReturnValue(Promise.resolve());
   });
 
   it("should call login if form is filled out correctly", () => {
-    let form = shallowMount(LoginForm, { localVue, store });
+    let form = shallowMount(LoginForm, {
+      localVue,
+      store,
+      stubs: {
+        "b-input": false
+      }
+    });
     let username = "test@test.com";
     let password = "test";
-    let emailInput = form.find("b-input-stub[type='email']");
-    let passwordInput = form.find("b-input-stub[type='password']");
-    emailInput.element.value = username;
-    emailInput.trigger("change");
-    passwordInput.element.value = password;
-    passwordInput.trigger("change");
+    form.setData({ email: username, password });
     form.find("button.is-primary").trigger("click");
     expect(store.dispatch).toHaveBeenCalledWith("login", {
       email: username,
