@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import isAuth from '../middleware/isAuthenticated';
 
 export default (passport) => {
   const router = Router();
@@ -16,6 +17,9 @@ export default (passport) => {
   router.get('/logout', (req, res) => {
     req.logout();
     return res.send();
+  });
+  router.get('/checkLogin', isAuth, (req, res) => {
+    res.send(req.user);
   });
   return router;
 };

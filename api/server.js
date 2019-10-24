@@ -6,6 +6,7 @@ import passport from 'passport';
 import config from './config/passport';
 
 import login from './routes/login';
+import todo from './routes/todo';
 
 // Setting up port
 const PORT = process.env.PORT || 3000;
@@ -24,6 +25,7 @@ config();
 
 // wire up all the routes
 app.use(login(passport));
+app.use(todo);
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', (_req, res) => {
@@ -31,5 +33,6 @@ app.get('/', (_req, res) => {
 });
 
 createConnection().then(() => {
+  // eslint-disable-next-line no-console
   app.listen(PORT, () => console.log('Example app listening on port 3000!'));
 });
