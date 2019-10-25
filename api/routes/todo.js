@@ -7,9 +7,7 @@ const router = Router();
 router.route('/todos')
   .all(isAuthenticated)
   .get((req, res) => {
-    getRepository(ToDo).find({ where: { userId: req.user.id } }).then((todos) => {
-      res.send(todos);
-    });
+    res.send(req.user.todos);
   })
   .post((req, res) => {
     const { done, title } = req.body;
