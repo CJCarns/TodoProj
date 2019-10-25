@@ -57,8 +57,13 @@ export default {
   },
   methods: {
     logout: function() {
-      this.$store.dispatch("logout");
+      this.$store.dispatch("logout").then(() => {
+        return this.$router.push("/");
+      });
     }
+  },
+  mounted: function() {
+    this.$store.dispatch("checkLoggedIn");
   }
 };
 </script>

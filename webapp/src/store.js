@@ -1,14 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import VuexPersist from "vuex-persist";
 import axios from "axios";
 
 Vue.use(Vuex);
-
-const vuexPersist = new VuexPersist({
-  key: "project-template",
-  storage: window.localStorage
-});
 
 export const mutations = {
   login: function(state) {
@@ -26,14 +20,18 @@ export const mutations = {
   },
   deleteToDo(state, todo) {
     state.todos = state.todos.filter(td => td.id !== todo.id);
+  },
+  todosLoaded(state, todos) {
+    state.todos = todos;
   }
 };
 
 export const actions = {
-  login: function({ commit }, payload) {
+  login: function({ commit, dispatch }, payload) {
     const { email, password } = payload;
     return axios.post("/api/login", { email, password }).then(() => {
       commit("login");
+      return dispatch("loadTodos");
     });
   },
   logout: function({ commit }) {
@@ -42,18 +40,33 @@ export const actions = {
     });
   },
   addToDo({ commit }, toDo) {
-    commit("addToDo", toDo);
+    return axios.post("/api/todos", toDo).then(response => {
+      commit("addToDo", response.data);
+    });
   },
   updateTodo({ commit }, toDo) {
-    commit("updateToDo", toDo);
+    return axios.put(`/api/todos/${toDo.id}`, toDo).then(response => {
+      commit("updateToDo", response.data);
+    });
   },
   deleteTodo({ commit }, toDo) {
-    commit("deleteToDo", toDo);
+    return axios.delete(`/api/todos/${toDo.id}`).then(() => {
+      commit("deleteToDo", toDo);
+    });
+  },
+  loadToDos({ commit }) {
+    return axios.get("/api/todos").then(response => {
+      commit("todosLoaded", response.data);
+    });
+  },
+  checkLoggedIn({ commit }) {
+    return axios.get("/api/checkLogin").then(() => {
+      commit("login");
+    });
   }
 };
 
 export default new Vuex.Store({
-  plugins: [vuexPersist.plugin],
   state: {
     todos: [],
     loginState: {
