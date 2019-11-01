@@ -3,24 +3,19 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
+  OneToMany
 } from 'typeorm';
 import User from './user';
-import Category from './category'
+import Todo from './todo';
 
 @Entity()
-export default class ToDo {
+export default class Category {
   @PrimaryGeneratedColumn()
   id
 
-  @Column({ type: 'boolean' })
-  done
-
   @Column({ type: 'varchar' })
-  title
+  name
 
-  @ManyToOne(() => User, (user) => user.todos)
+  @ManyToOne(() => User, (user) => user.category)
   user
-
-  @Column({ type: 'integer' })
-  category
 }

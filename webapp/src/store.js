@@ -12,6 +12,7 @@ export const mutations = {
     state.loginState = { ...state.loginState, loggedIn: false };
   },
   addToDo(state, todo) {
+    console.log(todo.category);
     state.todoIdx = state.todoIdx + 1;
     state.todos = [...state.todos, { ...todo, done: false, id: state.todoIdx }];
   },
@@ -23,6 +24,9 @@ export const mutations = {
   },
   todosLoaded(state, todos) {
     state.todos = todos;
+  },
+  categoriesLoaded(state, categories){
+    state.categories = categories;
   }
 };
 
@@ -58,6 +62,11 @@ export const actions = {
     return axios.get("/api/todos").then(response => {
       commit("todosLoaded", response.data);
     });
+  },
+  loadCategories({ commit }){
+    return axios.get("/api/category").then(response => {
+      commit("categoriesLoaded", response.data);
+    })
   },
   checkLoggedIn({ commit }) {
     return axios.get("/api/checkLogin").then(() => {
